@@ -74,6 +74,11 @@
   html {
     scroll-behavior: smooth;
     -webkit-text-size-adjust: 100%;
+    /* Keep anchor targets (#booking, #contact…) clear of the sticky header. */
+    scroll-padding-top: 4.5rem;
+    @media (width >= 48rem) {
+      scroll-padding-top: 8rem;
+    }
   }
 
   body {

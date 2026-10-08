@@ -56,7 +56,7 @@ export function UnitView({ lang, id }: { lang: Locale; id: UnitId }) {
             <Prose html={unit.description[lang]} className="mt-5 md:mt-8" textClass="text-14 leading-175 font-light md:text-16" />
             <div className="mb-8 mt-12 hidden h-px w-full bg-gray-400 md:block" />
           </div>
-          <aside className="mt-8 w-full md:sticky md:top-4 md:mt-0 md:w-9-24">
+          <aside className="mt-8 w-full md:sticky md:top-[131px] md:mt-0 md:w-9-24">
             <BookingWidget
               lang={lang}
               unit={{

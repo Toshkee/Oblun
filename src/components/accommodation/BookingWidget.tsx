@@ -104,7 +104,7 @@ export function BookingWidget({ lang, unit, links, termsHref, privacyHref }: Pro
   }
 
   return (
-    <div id="booking" className="relative flex w-full scroll-mt-24 flex-col rounded-4 border border-gray-200 bg-white p-4">
+    <div id="booking" className="relative flex w-full flex-col rounded-4 border border-gray-200 bg-white p-4">
       <p className="mb-1 mt-2 text-center text-24 font-normal text-black">{unit.title}</p>
       <p className="mb-4 text-center text-14 font-light text-brown-900">
         {t.from} <span className="text-16 font-medium text-ink">{formatEUR(unit.fromPrice, lang)}</span>{" "}

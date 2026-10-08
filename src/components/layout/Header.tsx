@@ -36,8 +36,8 @@ export function SocialLinks({ className = "", iconClass = "size-5" }: { classNam
 
 /**
  * Same layout as the original: on desktop a 64px row (social icons, logo,
- * language) above a 1px line and a 48px navigation row – 115px in total, not
- * sticky. On phones a fixed 64px bar with the hamburger menu.
+ * language) above a 1px line and a 48px navigation row – 115px in total. On
+ * phones a 64px bar with the hamburger menu. Sticky on both.
  */
 export function Header({ lang, route }: { lang: Locale; route?: Route }) {
   const t = ui(lang);
@@ -56,7 +56,7 @@ export function Header({ lang, route }: { lang: Locale; route?: Route }) {
   }));
 
   return (
-    <header className="sticky top-0 z-40 bg-white md:static">
+    <header className="sticky top-0 z-40 bg-white">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-white focus:px-3 focus:py-2">
         {lang === "en" ? "Skip to content" : "Pređi na sadržaj"}
       </a>
