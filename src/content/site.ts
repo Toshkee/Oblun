@@ -3,6 +3,12 @@ import type { PageKey } from "./types";
 export const site = {
   name: "Oblun Eco Resort",
   url: "https://www.oblun.com",
+  /**
+   * Search engines may index the site only when ALLOW_INDEXING=true is set
+   * (do that once the site runs on www.oblun.com), so test deployments such
+   * as *.vercel.app don't compete with the live site on Google.
+   */
+  indexable: process.env.ALLOW_INDEXING === "true",
   company: "Oblun Resort d.o.o.",
   city: "Podgorica, Montenegro",
   email: "info@oblun.com",

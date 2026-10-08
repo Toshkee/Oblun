@@ -42,6 +42,7 @@ Kopiraj `.env.example` u `.env.local`:
 - `SMTP_*` – mailbox preko kog se šalju upiti (bez ovoga, u produkciji forma prijavljuje grešku; lokalno se e-mail samo ispiše u konzoli).
 - `ICAL_<JEDINICA>` – opcionalno: iCal linkovi iz Airbnb-a i Booking.com-a. Tada sajt prikazuje zauzete datume kao nedostupne.
 - `NEXT_PUBLIC_GTM_ID` – opcionalno: Google Tag Manager.
+- `ALLOW_INDEXING=true` – tek kada sajt pređe na www.oblun.com. Do tada je sajt sakriven od pretraživača (`noindex` + `robots.txt`), da test verzija na vercel.app ne konkuriše postojećem sajtu.
 
 ## Prije puštanja u rad – provjeriti
 
