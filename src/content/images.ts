@@ -1,0 +1,71 @@
+import type { Img } from "./types";
+
+const img = (file: string, width: number, height: number, en: string, me: string): Img => ({
+  src: `/images/${file}`,
+  width,
+  height,
+  alt: { en, me },
+});
+
+/** Every photo used on the site, with dimensions and alt text in both languages. */
+export const images = {
+  homeHero: img("home-hero-skadar-lake.jpg", 1440, 640, "Lake Skadar and the mountains at sunset", "Skadarsko jezero i planine u zalazak sunca"),
+  villaEntrance: img("villa-entrance-flowers.jpg", 1280, 1920, "Stone steps with flowers at the entrance of Villa Oblun", "Kameni stepenici sa cvijećem na ulazu u vilu Oblun"),
+  tentsPath: img("tents-path.jpg", 1280, 1920, "Wooden path leading to a glamping tent", "Drvena staza do glamping šatora"),
+  boat: img("boat-lake-skadar.jpg", 1920, 1080, "Guest on a boat ride across Lake Skadar", "Gošća u vožnji čamcem po Skadarskom jezeru"),
+  breakfast: img("breakfast-terrace.jpg", 1920, 1080, "Homemade breakfast served on the terrace", "Domaći doručak serviran na terasi"),
+  garden1: img("garden-1.jpg", 1440, 1920, "Flower garden at the resort", "Cvjetna bašta u resortu"),
+  garden2: img("garden-2.jpg", 1440, 1920, "Roses and greenery around the resort", "Ruže i zelenilo oko resorta"),
+  contactHero: img("contact-hero-aerial.jpg", 1600, 900, "Aerial view of Oblun Eco Resort", "Pogled iz vazduha na Oblun Eco Resort"),
+
+  largeTent1: img("large-tent-1.jpg", 1920, 1280, "Large glamping tent at sunset", "Veliki glamping šator u zalazak sunca"),
+  largeTent2: img("large-tent-2.jpg", 1920, 1280, "Large glamping tent among the trees", "Veliki glamping šator među drvećem"),
+  largeTent3: img("large-tent-3.jpg", 1920, 1280, "Large glamping tent and its wooden deck", "Veliki glamping šator i drvena platforma"),
+  largeTent4: img("large-tent-4.jpg", 1280, 1920, "Entrance of the large glamping tent", "Ulaz u veliki glamping šator"),
+  mediumTent1: img("medium-tent-1.jpg", 1920, 1280, "Bedroom of the medium glamping tent", "Spavaća soba srednjeg glamping šatora"),
+  mediumTent2: img("medium-tent-2.jpg", 1920, 1281, "Double bed in the medium tent", "Bračni krevet u srednjem šatoru"),
+  mediumTent3: img("medium-tent-3.jpg", 1920, 1281, "Interior of the medium tent", "Unutrašnjost srednjeg šatora"),
+  mediumTent4: img("medium-tent-4.jpg", 1920, 1280, "Bed with fresh towels in the medium tent", "Krevet sa peškirima u srednjem šatoru"),
+  mediumTent5: img("medium-tent-5.jpg", 1920, 1280, "Glamping tent with a hammock and deck", "Glamping šator sa hamakom i platformom"),
+  mediumTent6: img("medium-tent-6.jpg", 1281, 1920, "Lit path to the tent at night", "Osvijetljena staza do šatora noću"),
+  mediumTent7: img("medium-tent-7.jpg", 1920, 1281, "Glamping tent glowing at night", "Glamping šator noću"),
+  smallTent1: img("small-tent-1.jpg", 1920, 1280, "Small glamping tent on a stone terrace", "Mali glamping šator na kamenoj terasi"),
+  smallTent2: img("small-tent-2.jpg", 1280, 1920, "Small glamping tent in the evening sun", "Mali glamping šator na večernjem suncu"),
+
+  mirror1: img("mirror-cabin-1.jpg", 1920, 1280, "Mirror Cabin reflecting the forest", "Mirror Cabin u kojoj se ogleda šuma"),
+  mirror2: img("mirror-cabin-2.jpg", 1920, 1280, "Mirror Cabin with hammocks on the deck", "Mirror Cabin sa hamacima na platformi"),
+  mirror3: img("mirror-cabin-3.jpg", 1920, 1280, "Bedroom of the Mirror Cabin with a forest view", "Spavaća soba Mirror Cabin sa pogledom na šumu"),
+  mirror4: img("mirror-cabin-4.jpg", 1920, 1280, "Bed facing the glass wall of the Mirror Cabin", "Krevet okrenut staklenom zidu Mirror Cabin"),
+  mirror5: img("mirror-cabin-5.jpg", 1280, 1920, "Bathroom of the Mirror Cabin", "Kupatilo u Mirror Cabin"),
+  mirror6: img("mirror-cabin-6.jpg", 1280, 1920, "Glass shower in the Mirror Cabin", "Staklena tuš kabina u Mirror Cabin"),
+  mirror7: img("mirror-cabin-7.jpg", 1920, 1281, "Mirror Cabin hidden in the forest", "Mirror Cabin skrivena u šumi"),
+  mirror8: img("mirror-cabin-8.jpg", 1080, 1920, "Mirror Cabin at night", "Mirror Cabin noću"),
+
+  villa1: img("villa-1.jpg", 1920, 1281, "Stone facade of Villa Oblun", "Kamena fasada vile Oblun"),
+  villa2: img("villa-2.jpg", 1920, 1281, "Villa Oblun with parasols on the terrace", "Vila Oblun sa suncobranima na terasi"),
+  villa3: img("villa-3.jpg", 1920, 1280, "Terrace of Villa Oblun overlooking the valley", "Terasa vile Oblun sa pogledom na dolinu"),
+  villa4: img("villa-4.jpg", 1920, 1280, "Courtyard with sun loungers at Villa Oblun", "Dvorište sa ležaljkama u vili Oblun"),
+  villa5: img("villa-5.jpg", 1920, 1280, "Living room with a wooden ceiling in Villa Oblun", "Dnevni boravak sa drvenim plafonom u vili Oblun"),
+  villa6: img("villa-6.jpg", 1280, 1920, "Bedroom with a canopy bed in Villa Oblun", "Spavaća soba sa krevetom s baldahinom u vili Oblun"),
+  villa7: img("villa-7.jpg", 1280, 1920, "Cosy bedroom detail in Villa Oblun", "Detalj spavaće sobe u vili Oblun"),
+  villa8: img("villa-8.jpg", 1920, 1280, "Bright bedroom with two beds in Villa Oblun", "Svijetla soba sa dva kreveta u vili Oblun"),
+  villa9: img("villa-9.jpg", 1920, 1280, "Second bedroom of Villa Oblun", "Druga spavaća soba vile Oblun"),
+
+  autocamp1: img("autocamp-1.jpg", 1440, 1920, "Campervan parked on a grass pitch", "Kamper parkiran na travnatom mjestu"),
+  autocamp2: img("autocamp-2.jpg", 1440, 1920, "Motorhome under the trees at the AutoCamp", "Kamp kućica ispod drveća u auto-kampu"),
+  autocamp3: img("autocamp-3.jpg", 1440, 1920, "Gravel road through the AutoCamp", "Makadamski put kroz auto-kamp"),
+  autocamp4: img("autocamp-4.jpg", 1440, 1920, "Old oak tree at the AutoCamp", "Stari hrast u auto-kampu"),
+  campsite1: img("campsite-1.jpg", 1200, 1600, "Grass pitches at the campsite", "Travnata mjesta u kampu"),
+  campsite2: img("campsite-2.jpg", 1200, 1600, "Campsite under the summer sun", "Kamp pod ljetnjim suncem"),
+  campsite3: img("campsite-3.jpg", 1200, 1600, "Green lawn and trees at the campsite", "Zeleni travnjak i drveće u kampu"),
+  campsite4: img("campsite-4.jpg", 1080, 1920, "Campsite sign among the trees", "Tabla kampa među drvećem"),
+  campsite5: img("campsite-5.jpg", 1080, 1920, "Entrance to the campsite", "Ulaz u kamp"),
+
+  picnic: img("experience-picnic.jpg", 1920, 1280, "Couple enjoying a picnic with wine in nature", "Par uživa u pikniku uz vino u prirodi"),
+  hiking: img("experience-hiking.jpg", 1920, 1280, "Hikers climbing stone steps", "Planinari se penju kamenim stepenicama"),
+  lovcen: img("experience-lovcen.jpg", 1920, 1279, "Mount Lovćen at sunset", "Lovćen u zalazak sunca"),
+  cetinje: img("experience-cetinje.jpg", 1920, 1080, "Aerial view of Cetinje", "Cetinje iz vazduha"),
+  rijeka: img("experience-rijeka-crnojevica.jpg", 1920, 1280, "Old bridge in Rijeka Crnojevića", "Stari most u Rijeci Crnojevića"),
+  lakeSkadar: img("experience-lake-skadar.jpg", 1920, 1279, "Lake Skadar wetlands from above", "Močvare Skadarskog jezera iz vazduha"),
+  experiencesHero: img("experiences-hero.jpg", 1920, 1280, "Couple walking through the Montenegrin hills", "Par šeta crnogorskim brdima"),
+} satisfies Record<string, Img>;
