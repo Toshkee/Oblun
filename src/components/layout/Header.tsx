@@ -52,15 +52,24 @@ export function Header({ lang, route }: { lang: Locale; route?: Route }) {
         {lang === "en" ? "Skip to content" : "Pređi na sadržaj"}
       </a>
       <div className="container-site">
-        <div className="relative flex h-14 items-center justify-between border-b border-gray-200 text-brown-900">
-          <MobileMenu items={nav} labels={{ open: t.menu, close: t.close }} />
+        <div className="relative flex h-14 items-center justify-between text-brown-900 md:border-b md:border-gray-200">
+          <MobileMenu
+            items={nav}
+            languages={locales.map((l) => ({
+              short: ui(l).languageShort,
+              href: route ? pathFor(route, l) : pathFor({ kind: "page", key: "home" }, l),
+              current: l === lang,
+              hrefLang: l === "me" ? "sr-ME" : "en",
+            }))}
+            labels={{ open: t.menu, close: t.close, language: t.languageSelection }}
+          />
           <SocialLinks className="hidden md:flex" />
 
           <Link href={home} className="absolute left-1/2 -translate-x-1/2" aria-label={`${site.name} – ${t.home}`}>
             <Image src="/brand/logo.svg" alt="Oblun Eco Resort" width={92} height={35} preload />
           </Link>
 
-          <details className="group relative">
+          <details className="group relative hidden md:block">
             <summary className="flex cursor-pointer list-none items-center gap-1.5 px-1 py-2 text-xs font-medium tracking-wide [&::-webkit-details-marker]:hidden">
               <span className="sr-only">{lang === "en" ? "Language:" : "Jezik:"}</span>
               {t.languageShort}
