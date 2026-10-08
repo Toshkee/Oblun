@@ -18,9 +18,11 @@ const localToday = () => {
   return new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate())).toISOString().slice(0, 10);
 };
 
+// Same look as the original filter fields. 16px text on phones keeps iOS from
+// zooming in, and min-w-0 lets the native date inputs shrink inside narrow boxes.
 export const fieldClass =
-  "h-11 w-full border border-brown-900/60 bg-white px-3 text-sm text-ink outline-none focus:border-ink focus:ring-1 focus:ring-ink";
-export const fieldLabel = "mb-1 block text-xs font-medium text-brown-900";
+  "h-11 w-full min-w-0 border border-brown-900 bg-white px-3 text-16 font-medium leading-170 text-brown-900 outline-none focus:border-ink md:h-[42px] md:text-14";
+export const fieldLabel = "block text-14 font-light leading-200 text-brown-900";
 
 /** Reads ?checkIn=&checkOut=&adults=&children=&infants= from the address bar once on mount. */
 export function useStayState(defaultAdults = 2) {
@@ -70,7 +72,7 @@ export function DateFields({
 }) {
   return (
     <>
-      <div>
+      <div className="min-w-0">
         <label htmlFor={`${idPrefix}-in`} className={fieldLabel}>{t.checkIn}</label>
         <input
           id={`${idPrefix}-in`}
@@ -86,7 +88,7 @@ export function DateFields({
           className={fieldClass}
         />
       </div>
-      <div>
+      <div className="min-w-0">
         <label htmlFor={`${idPrefix}-out`} className={fieldLabel}>{t.checkOut}</label>
         <input
           id={`${idPrefix}-out`}
@@ -107,14 +109,14 @@ function Stepper({ label, hint, value, min, onChange }: { label: string; hint: s
   return (
     <div className="flex items-center justify-between gap-4 py-2.5">
       <div>
-        <p className="text-sm text-ink">{label}</p>
-        <p className="text-xs text-gray-600">{hint}</p>
+        <p className="text-14 font-normal text-ink">{label}</p>
+        <p className="text-12 text-gray-600">{hint}</p>
       </div>
       <div className="flex items-center gap-3">
         <button type="button" className={btn} disabled={value <= min} onClick={() => onChange(value - 1)} aria-label={`${label} −1`}>
           <Minus className="size-3.5" aria-hidden />
         </button>
-        <span className="w-4 text-center text-sm tabular-nums" aria-live="polite">{value}</span>
+        <span className="w-4 text-center text-14 font-medium tabular-nums" aria-live="polite">{value}</span>
         <button type="button" className={btn} disabled={value >= 12} onClick={() => onChange(value + 1)} aria-label={`${label} +1`}>
           <Plus className="size-3.5" aria-hidden />
         </button>
@@ -141,7 +143,7 @@ export function GuestPicker({ guests, onChange, t, id }: { guests: Guests; onCha
   }, [open]);
 
   return (
-    <div ref={ref} className="relative">
+    <div ref={ref} className="relative min-w-0">
       <span id={`${id}-label`} className={fieldLabel}>{t.guests}</span>
       <button
         type="button"
@@ -155,7 +157,7 @@ export function GuestPicker({ guests, onChange, t, id }: { guests: Guests; onCha
         <ChevronDown className={`size-4 shrink-0 transition-transform ${open ? "rotate-180" : ""}`} aria-hidden />
       </button>
       {open && (
-        <div id={`${id}-panel`} className="absolute left-0 right-0 top-full z-20 mt-1 min-w-64 border border-gray-200 bg-white px-4 py-2 shadow-xl">
+        <div id={`${id}-panel`} className="absolute left-0 right-0 top-full z-20 mt-1 min-w-64 border border-brown-900 bg-white px-4 py-2 shadow-4">
           <Stepper label={t.adults} hint={t.adultsHint} value={guests.adults} min={1} onChange={(adults) => onChange({ ...guests, adults })} />
           <Stepper label={t.children} hint={t.childrenHint} value={guests.children} min={0} onChange={(children) => onChange({ ...guests, children })} />
           <Stepper label={t.infants} hint={t.infantsHint} value={guests.infants} min={0} onChange={(infants) => onChange({ ...guests, infants })} />

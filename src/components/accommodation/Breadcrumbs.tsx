@@ -1,15 +1,16 @@
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 
-export function Breadcrumbs({ items, label }: { items: { href?: string; label: string }[]; label: string }) {
+/** Breadcrumb trail, styled like the original (16px, light brown, hidden on phones). */
+export function Breadcrumbs({ items, label, className = "" }: { items: { href?: string; label: string }[]; label: string; className?: string }) {
   return (
-    <nav aria-label={label} className="text-xs text-brown-600">
-      <ol className="flex flex-wrap items-center gap-1.5">
+    <nav aria-label={label} className={`hidden md:block ${className}`}>
+      <ol className="flex flex-wrap items-center">
         {items.map((item, i) => (
-          <li key={item.label} className="flex items-center gap-1.5">
-            {i > 0 && <ChevronRight className="size-3" aria-hidden />}
+          <li key={item.label} className="flex items-center text-16 leading-150">
+            {i > 0 && <ChevronRight className="mx-3 size-4 text-brown-600" aria-hidden />}
             {item.href ? (
-              <Link href={item.href} className="hover:text-brown-900 hover:underline">
+              <Link href={item.href} className="font-normal text-brown-600 hover:underline">
                 {item.label}
               </Link>
             ) : (

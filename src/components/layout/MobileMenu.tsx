@@ -64,16 +64,15 @@ export function MobileMenu({
         <span className={`${strip} ${open ? "top-2 -rotate-45" : "top-4"}`} />
       </button>
 
-      {/* Rendered in <body>: the header's backdrop-filter would otherwise
-          become the containing block of this position:fixed panel. */}
+      {/* Rendered in <body> so the panel can slide out from behind the sticky header. */}
       {isClient &&
         createPortal(
           <div
             id="mobile-menu"
             inert={!open}
             aria-hidden={!open}
-            className={`fixed inset-x-0 z-[35] flex h-[calc(100dvh-3.5rem)] flex-col justify-between overflow-y-auto bg-white pb-6 transition-all duration-1000 md:hidden ${
-              open ? "top-14 translate-y-0" : "top-0 -translate-y-full"
+            className={`fixed inset-x-0 z-[35] flex h-[calc(100dvh-4rem)] flex-col justify-between overflow-y-auto bg-white pb-6 transition-all duration-1000 md:hidden ${
+              open ? "top-16 translate-y-0" : "top-0 -translate-y-full"
             }`}
           >
             <div>
@@ -87,7 +86,7 @@ export function MobileMenu({
                     href={item.href}
                     onClick={() => setOpen(false)}
                     aria-current={item.active ? "page" : undefined}
-                    className={`flex min-h-8 items-center text-lg leading-[1.75] text-brown-900 ${item.active ? "font-medium" : "font-light"}`}
+                    className={`flex min-h-8 items-center text-18 leading-175 text-brown-900 ${item.active ? "font-medium" : "font-light"}`}
                   >
                     {item.label}
                   </Link>
@@ -97,7 +96,7 @@ export function MobileMenu({
 
             <div className="container-site pt-10">
               <div className="mb-9 flex flex-col text-brown-900">
-                <span className="text-sm font-light leading-loose">{labels.language}</span>
+                <span className="text-14 font-light leading-200">{labels.language}</span>
                 <details className="group">
                   <summary className="flex cursor-pointer list-none items-center justify-between border border-brown-900 p-2 [&::-webkit-details-marker]:hidden">
                     <span className="font-light">{current.short}</span>

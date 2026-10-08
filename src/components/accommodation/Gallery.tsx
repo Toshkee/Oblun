@@ -6,7 +6,10 @@ import { ChevronLeft, ChevronRight, X } from "lucide-react";
 
 type Photo = { src: string; alt: string };
 
-/** Photo grid (one large + two small) that opens a full-screen lightbox. */
+/**
+ * Photos like on the original: a large 3:2 photo (16/24) next to two smaller
+ * ones (8/24), the last one showing "+N photos". Click opens a lightbox.
+ */
 export function Gallery({ photos, labels }: { photos: Photo[]; labels: { more: string; previous: string; next: string; close: string; photos: string } }) {
   const [open, setOpen] = useState<number | null>(null);
   const show = useCallback((i: number) => setOpen((i + photos.length) % photos.length), [photos.length]);
@@ -32,28 +35,35 @@ export function Gallery({ photos, labels }: { photos: Photo[]; labels: { more: s
 
   return (
     <>
-      <div className={`grid gap-2 ${side.length ? "md:grid-cols-[2fr_1fr] md:grid-rows-2" : ""}`}>
-        <button type="button" onClick={() => show(0)} className="relative aspect-[3/2] overflow-hidden md:row-span-2 md:aspect-auto md:min-h-[26rem]">
-          <Image src={first.src} alt={first.alt} fill sizes="(min-width: 768px) 660px, 100vw" preload className="object-cover transition-transform duration-500 hover:scale-[1.02]" />
-        </button>
-        {side.map((photo, i) => (
-          <button key={photo.src} type="button" onClick={() => show(i + 1)} className="relative hidden aspect-[3/2] overflow-hidden md:block md:aspect-auto">
-            <Image src={photo.src} alt={photo.alt} fill sizes="330px" className="object-cover transition-transform duration-500 hover:scale-[1.02]" />
-            {i === 1 && remaining > 0 && (
-              <span className="absolute inset-0 flex items-center justify-center bg-black/40 text-sm font-medium text-white underline underline-offset-4">
-                {labels.more}
-              </span>
-            )}
+      <div className="flex w-full pb-6">
+        <div className={`w-full ${side.length ? "md:w-16-24 md:shrink" : ""}`}>
+          <button type="button" onClick={() => show(0)} className="relative block aspect-3/2 w-full overflow-hidden">
+            <Image src={first.src} alt={first.alt} fill sizes="(min-width: 1176px) 784px, (min-width: 768px) 66vw, 100vw" preload className="object-cover object-center" />
+            <span className="absolute bottom-3 right-3 bg-white/90 px-3 py-1 text-14 font-medium text-brown-900 md:hidden">
+              {labels.photos} ({photos.length})
+            </span>
           </button>
-        ))}
-        <button type="button" onClick={() => show(0)} className="justify-self-start text-sm text-brown-900 underline underline-offset-4 md:hidden">
-          {labels.photos} ({photos.length})
-        </button>
+        </div>
+        {side.length > 0 && (
+          // Two photos that together are exactly as tall as the large one.
+          <div className="ml-4 hidden w-8-24 shrink-0 flex-col gap-4 md:flex">
+            {side.map((photo, i) => (
+              <button key={photo.src} type="button" onClick={() => show(i + 1)} className="relative block w-full flex-1 overflow-hidden">
+                <Image src={photo.src} alt={photo.alt} fill sizes="(min-width: 1176px) 380px, 33vw" className="object-cover object-center" />
+                {i === 1 && remaining > 0 && (
+                  <span className="absolute inset-0 flex items-center justify-center bg-[#1f140c66] text-18 font-medium leading-200 text-white underline">
+                    {labels.more}
+                  </span>
+                )}
+              </button>
+            ))}
+          </div>
+        )}
       </div>
 
       {open !== null && (
         <div role="dialog" aria-modal="true" aria-label={labels.photos} className="fixed inset-0 z-50 flex flex-col bg-black/95 text-white">
-          <div className="flex items-center justify-between p-4 text-sm">
+          <div className="flex items-center justify-between p-4 text-14">
             <span className="tabular-nums">
               {open + 1} / {photos.length}
             </span>
@@ -73,7 +83,7 @@ export function Gallery({ photos, labels }: { photos: Photo[]; labels: { more: s
               <span className="sr-only">{labels.next}</span>
             </button>
           </div>
-          <p className="p-4 text-center text-sm text-white/80">{photos[open].alt}</p>
+          <p className="p-4 text-center text-14 text-white/80">{photos[open].alt}</p>
         </div>
       )}
     </>

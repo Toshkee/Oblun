@@ -5,7 +5,6 @@ import { useState, type FormEvent } from "react";
 import type { Locale, UnitId } from "@/content/types";
 import { ui } from "@/content/ui";
 import { formatEUR, type Quote, type StayError } from "@/lib/pricing";
-import { buttonClass } from "../ui/styles";
 import { DateFields, GuestPicker, fieldClass, fieldLabel, useStayState, type Stay } from "./StayInputs";
 
 type Check = { ok: false; error: StayError } | { ok: true; available: boolean; confirmed: boolean; quote: Quote };
@@ -105,32 +104,32 @@ export function BookingWidget({ lang, unit, links, termsHref, privacyHref }: Pro
   }
 
   return (
-    <div id="booking" className="scroll-mt-32 border border-brown-100 bg-white p-5 shadow-sm md:p-6">
-      <p className="font-serif text-2xl text-brown-900">{unit.title}</p>
-      <p className="mt-1 text-sm text-brown-900">
-        {t.from} <span className="text-lg font-semibold text-ink">{formatEUR(unit.fromPrice, lang)}</span>{" "}
+    <div id="booking" className="relative flex w-full scroll-mt-24 flex-col rounded-4 border border-gray-200 bg-white p-4">
+      <p className="mb-1 mt-2 text-center text-24 font-normal text-black">{unit.title}</p>
+      <p className="mb-4 text-center text-14 font-light text-brown-900">
+        {t.from} <span className="text-16 font-medium text-ink">{formatEUR(unit.fromPrice, lang)}</span>{" "}
         {unit.per === "pitch" ? t.perPitchNight : t.perNight}
       </p>
 
-      <form onSubmit={onCheck} className="mt-5 grid grid-cols-2 gap-3">
+      <form onSubmit={onCheck} className="grid grid-cols-1 gap-x-3 gap-y-2 xl:grid-cols-2">
         <DateFields stay={stay} onChange={update} today={today} t={t} idPrefix="booking" />
-        <div className="col-span-2">
+        <div className="xl:col-span-2">
           <GuestPicker guests={stay.guests} onChange={(guests) => update({ ...stay, guests })} t={t} id="booking-guests" />
         </div>
         {!check?.ok && (
-          <button type="submit" disabled={loading} className={buttonClass("solid", "col-span-2 h-11")}>
+          <button type="submit" disabled={loading} className="mb-2 mt-2 flex h-12 w-full xl:col-span-2 items-center justify-center bg-brown-600 text-16 text-white transition-colors hover:bg-brown-900 disabled:opacity-60">
             {loading ? t.checking : t.checkAvailability}
           </button>
         )}
       </form>
 
       <div aria-live="polite">
-        {check && !check.ok && <p className="mt-3 text-sm text-error">{errorText(check.error)}</p>}
-        {check?.ok && !check.available && <p className="mt-4 text-sm text-error">{t.unavailable}</p>}
+        {check && !check.ok && <p className="mt-2 text-14 text-error">{errorText(check.error)}</p>}
+        {check?.ok && !check.available && <p className="mt-3 text-14 text-error">{t.unavailable}</p>}
 
         {check?.ok && check.available && (
           <div className="mt-5">
-            <dl className="space-y-1.5 border-t border-brown-100 pt-4 text-sm text-brown-900">
+            <dl className="space-y-1.5 border-t border-gray-200 pt-4 text-14 font-light text-brown-900">
               {breakdown(check.quote).map((g) => (
                 <div key={`${g.price}-${g.count}`} className="flex justify-between">
                   <dt>
@@ -139,20 +138,20 @@ export function BookingWidget({ lang, unit, links, termsHref, privacyHref }: Pro
                   <dd>{formatEUR(g.price * g.count, lang)}</dd>
                 </div>
               ))}
-              <div className="flex justify-between border-t border-brown-100 pt-2 text-base font-semibold text-ink">
+              <div className="flex justify-between border-t border-gray-200 pt-2 text-16 font-medium text-ink">
                 <dt>{t.total}</dt>
                 <dd>{formatEUR(check.quote.total, lang)}</dd>
               </div>
             </dl>
-            <p className="mt-2 text-xs text-gray-600">{t.priceNote}</p>
+            <p className="mt-2 text-12 text-gray-600">{t.priceNote}</p>
 
             {status === "sent" ? (
-              <p role="status" className="mt-5 border border-success/40 bg-beige-100 p-4 text-sm text-brown-900">
+              <p role="status" className="mt-5 border border-success/40 bg-beige-100 p-4 text-14 text-brown-900">
                 {t.requestSent}
               </p>
             ) : (
-              <form onSubmit={onRequest} className="mt-5 space-y-3">
-                <p className="text-sm font-semibold text-brown-900">{t.requestTitle}</p>
+              <form onSubmit={onRequest} className="mt-5 flex flex-col space-y-2">
+                <p className="text-14 font-medium text-brown-900">{t.requestTitle}</p>
                 <div>
                   <label htmlFor="b-name" className={fieldLabel}>{t.fullName}</label>
                   <input id="b-name" name="name" required autoComplete="name" className={fieldClass} />
@@ -170,31 +169,35 @@ export function BookingWidget({ lang, unit, links, termsHref, privacyHref }: Pro
                   <textarea id="b-message" name="message" rows={3} className={`${fieldClass} h-auto py-2`} />
                 </div>
                 <input type="text" name="website" tabIndex={-1} autoComplete="off" aria-hidden className="hidden" />
-                <label className="flex items-start gap-2.5 text-xs leading-relaxed text-gray-600">
-                  <input type="checkbox" required checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 size-4 shrink-0 accent-brown-900" />
+                <label className="flex items-start gap-3 pt-1 text-12 font-light leading-170 text-gray-600">
+                  <input type="checkbox" required checked={agreed} onChange={(e) => setAgreed(e.target.checked)} className="mt-0.5 size-5 shrink-0 accent-brown-900" />
                   <span>
                     {t.agree}{" "}
                     <Link href={termsHref} className="underline underline-offset-2">{t.termsLink}</Link> {t.and}{" "}
                     <Link href={privacyHref} className="underline underline-offset-2">{t.privacyLink}</Link>
                   </span>
                 </label>
-                <button type="submit" disabled={!agreed || status === "sending"} className={buttonClass("solid", "w-full")}>
+                <button
+                  type="submit"
+                  disabled={!agreed || status === "sending"}
+                  className="flex h-12 w-full items-center justify-center bg-brown-600 text-16 text-white transition-colors hover:bg-brown-900 disabled:bg-gray-200 disabled:text-gray-400"
+                >
                   {status === "sending" ? t.sending : t.sendRequest}
                 </button>
               </form>
             )}
           </div>
         )}
-        {status === "error" && <p role="alert" className="mt-3 text-sm text-error">{t.somethingWrong}</p>}
+        {status === "error" && <p role="alert" className="mt-3 text-14 text-error">{t.somethingWrong}</p>}
       </div>
 
       {links.length > 0 && (
-        <p className="mt-6 border-t border-brown-100 pt-4 text-xs text-gray-600">
+        <p className="mt-4 border-t border-gray-200 pt-3 text-12 font-light text-gray-600">
           {t.alsoBookOn}{" "}
           {links.map((l, i) => (
             <span key={l.href}>
               {i > 0 && " · "}
-              <a href={l.href} target="_blank" rel="noopener noreferrer" className="font-semibold text-brown-900 underline underline-offset-2">
+              <a href={l.href} target="_blank" rel="noopener noreferrer" className="font-medium text-brown-900 underline underline-offset-2">
                 {l.label}
               </a>
             </span>

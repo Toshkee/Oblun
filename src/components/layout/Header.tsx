@@ -15,18 +15,18 @@ function isActive(key: string, route?: Route) {
   return key === "accommodation";
 }
 
-export function SocialLinks({ className = "" }: { className?: string }) {
+export function SocialLinks({ className = "", iconClass = "size-5" }: { className?: string; iconClass?: string }) {
   const links = [
     { href: site.social.instagram.url, label: "Instagram", Icon: InstagramIcon },
     { href: site.social.facebook.url, label: "Facebook", Icon: FacebookIcon },
     { href: site.social.linkedin.url, label: "LinkedIn", Icon: LinkedInIcon },
   ];
   return (
-    <ul className={`flex items-center gap-3 ${className}`}>
+    <ul className={`flex items-center ${className}`}>
       {links.map(({ href, label, Icon }) => (
         <li key={label}>
-          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="block p-1 hover:opacity-70">
-            <Icon className="size-4" />
+          <a href={href} target="_blank" rel="noopener noreferrer" aria-label={label} className="flex items-center justify-center hover:opacity-70">
+            <Icon className={iconClass} />
           </a>
         </li>
       ))}
@@ -34,6 +34,11 @@ export function SocialLinks({ className = "" }: { className?: string }) {
   );
 }
 
+/**
+ * Same layout as the original: on desktop a 64px row (social icons, logo,
+ * language) above a 1px line and a 48px navigation row – 115px in total, not
+ * sticky. On phones a fixed 64px bar with the hamburger menu.
+ */
 export function Header({ lang, route }: { lang: Locale; route?: Route }) {
   const t = ui(lang);
   const home = pathFor({ kind: "page", key: "home" }, lang);
@@ -43,63 +48,74 @@ export function Header({ lang, route }: { lang: Locale; route?: Route }) {
     label: getPage(key).navTitle[lang],
     active: isActive(key, route),
   }));
-  const other = locales.find((l) => l !== lang)!;
-  const otherHref = route ? pathFor(route, other) : pathFor({ kind: "page", key: "home" }, other);
+  const languages = locales.map((l) => ({
+    short: ui(l).languageShort,
+    href: route ? pathFor(route, l) : pathFor({ kind: "page", key: "home" }, l),
+    current: l === lang,
+    hrefLang: l === "me" ? "sr-ME" : "en",
+  }));
 
   return (
-    <header className="sticky top-0 z-40 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/85">
+    <header className="sticky top-0 z-40 bg-white md:static">
       <a href="#main" className="sr-only focus:not-sr-only focus:absolute focus:left-4 focus:top-4 focus:bg-white focus:px-3 focus:py-2">
         {lang === "en" ? "Skip to content" : "Pređi na sadržaj"}
       </a>
       <div className="container-site">
-        <div className="relative flex h-14 items-center justify-between text-brown-900 md:border-b md:border-gray-200">
-          <MobileMenu
-            items={nav}
-            languages={locales.map((l) => ({
-              short: ui(l).languageShort,
-              href: route ? pathFor(route, l) : pathFor({ kind: "page", key: "home" }, l),
-              current: l === lang,
-              hrefLang: l === "me" ? "sr-ME" : "en",
-            }))}
-            labels={{ open: t.menu, close: t.close, language: t.languageSelection }}
-          />
-          <SocialLinks className="hidden md:flex" />
-
+        {/* Phone bar */}
+        <div className="relative flex h-16 items-center justify-between md:hidden">
+          <MobileMenu items={nav} languages={languages} labels={{ open: t.menu, close: t.close, language: t.languageSelection }} />
           <Link href={home} className="absolute left-1/2 -translate-x-1/2" aria-label={`${site.name} – ${t.home}`}>
-            <Image src="/brand/logo.svg" alt="Oblun Eco Resort" width={92} height={35} preload />
+            <Image src="/brand/logo.svg" alt="Oblun Eco Resort" width={104} height={40} preload />
           </Link>
-
-          <details className="group relative hidden md:block">
-            <summary className="flex cursor-pointer list-none items-center gap-1.5 px-1 py-2 text-xs font-medium tracking-wide [&::-webkit-details-marker]:hidden">
-              <span className="sr-only">{lang === "en" ? "Language:" : "Jezik:"}</span>
-              {t.languageShort}
-              <ChevronDown className="size-3.5 transition-transform group-open:rotate-180" aria-hidden />
-            </summary>
-            <div className="absolute right-0 top-full z-10 mt-1 min-w-36 border border-gray-200 bg-white py-1 shadow-lg">
-              <a href={otherHref} hrefLang={other === "me" ? "sr-ME" : "en"} lang={other === "me" ? "sr-Latn-ME" : "en"} className="block px-4 py-2 text-sm hover:bg-beige-300">
-                {ui(other).languageName}
-              </a>
-            </div>
-          </details>
+          <span className="w-5" aria-hidden />
         </div>
 
-        <nav aria-label={lang === "en" ? "Main" : "Glavni meni"} className="hidden md:block">
-          <ul className="flex items-center justify-center gap-1 py-1.5">
+        {/* Desktop */}
+        <div className="hidden md:block">
+          <div className="flex h-16 items-end justify-between">
+            <SocialLinks className="mb-2 gap-x-3 text-brown-900" />
+            <Link href={home} className="relative mb-4" aria-label={`${site.name} – ${t.home}`}>
+              <Image src="/brand/logo.svg" alt="Oblun Eco Resort" width={104} height={40} preload />
+            </Link>
+            <div className="relative mb-2 flex min-w-36 items-center justify-center text-14">
+              <details className="group relative">
+                <summary className="flex cursor-pointer list-none items-center font-light text-brown-900 [&::-webkit-details-marker]:hidden">
+                  <span className="sr-only">{t.languageSelection}:</span>
+                  {t.languageShort}
+                  <ChevronDown className="ml-3 size-4 transition-transform group-open:rotate-180" aria-hidden />
+                </summary>
+                <ul className="absolute right-0 top-full z-50 mt-2 min-w-28 border border-brown-900 bg-white">
+                  {languages.map((l) => (
+                    <li key={l.short}>
+                      <a
+                        href={l.href}
+                        hrefLang={l.hrefLang}
+                        className={`flex px-3 py-2 text-brown-900 hover:bg-brown-100 ${l.current ? "font-medium" : "font-light"}`}
+                      >
+                        {l.short}
+                      </a>
+                    </li>
+                  ))}
+                </ul>
+              </details>
+            </div>
+          </div>
+          <div className="h-px w-full bg-brown-900" />
+          <nav aria-label={lang === "en" ? "Main" : "Glavni meni"} className="relative mt-[2px] flex h-12 w-full items-center justify-center">
             {nav.map((item) => (
-              <li key={item.key}>
-                <Link
-                  href={item.href}
-                  aria-current={item.active ? "page" : undefined}
-                  className={`block px-2.5 py-2 text-[11px] font-medium uppercase tracking-[0.08em] transition-colors ${
-                    item.active ? "bg-brown-900 text-white" : "text-brown-900 hover:bg-beige-300"
-                  }`}
-                >
-                  {item.label}
-                </Link>
-              </li>
+              <Link
+                key={item.key}
+                href={item.href}
+                aria-current={item.active ? "page" : undefined}
+                className={`px-2 pb-3 pt-4 text-14 uppercase leading-175 transition-colors ${
+                  item.active ? "bg-brown-900 font-medium text-white" : "font-light text-brown-900 hover:bg-brown-100"
+                }`}
+              >
+                {item.label}
+              </Link>
             ))}
-          </ul>
-        </nav>
+          </nav>
+        </div>
       </div>
     </header>
   );

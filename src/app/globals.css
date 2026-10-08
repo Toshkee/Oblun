@@ -1,7 +1,13 @@
 @import "tailwindcss";
 
-/* Oblun brand palette and type scale (taken from the original site). */
+/*
+ * Oblun design tokens, taken from the original oblun.com stylesheet so class
+ * names like `text-40`, `leading-175` or `w-15-24` mean exactly the same thing.
+ * Breakpoints: md (48rem) = the original "sm", xl (73.5rem) = the original "md".
+ */
 @theme {
+  --breakpoint-xl: 73.5rem;
+
   --color-beige-100: #fcfaf6;
   --color-beige-300: #f9f4ed;
   --color-beige-500: #f6efe3;
@@ -10,16 +16,58 @@
   --color-brown-600: #a59080;
   --color-brown-900: #66594f;
   --color-ink: #1f140c;
+  --color-navy: #072c49;
   --color-gray-200: #e5e5e5;
   --color-gray-400: #b2b2b2;
   --color-gray-600: #8c8c8c;
+  --color-gray-light: #dedede;
   --color-success: #3f9a63;
   --color-error: #dc1010;
 
   --font-sans: var(--font-poppins), ui-sans-serif, system-ui, sans-serif;
   --font-serif: var(--font-baskervville), Georgia, serif;
 
-  --container-site: 64rem;
+  --text-10: 0.625rem;
+  --text-12: 0.75rem;
+  --text-14: 0.875rem;
+  --text-16: 1rem;
+  --text-18: 1.125rem;
+  --text-20: 1.25rem;
+  --text-22: 1.375rem;
+  --text-24: 1.5rem;
+  --text-28: 1.75rem;
+  --text-36: 2.25rem;
+  --text-40: 2.5rem;
+  --text-48: 3rem;
+  --text-56: 3.5rem;
+  --text-68: 4.25rem;
+
+  --leading-100: 100%;
+  --leading-120: 120%;
+  --leading-122: 122%;
+  --leading-125: 125%;
+  --leading-130: 130%;
+  --leading-150: 150%;
+  --leading-160: 160%;
+  --leading-170: 170%;
+  --leading-175: 175%;
+  --leading-200: 200%;
+
+  --spacing-1-24: 4.166666667%;
+  --spacing-4-24: 16.66666667%;
+  --spacing-6-24: 25%;
+  --spacing-8-24: 33.33333334%;
+  --spacing-9-24: 37.5%;
+  --spacing-10-24: 41.66666667%;
+  --spacing-11-24: 45.83333334%;
+  --spacing-12-24: 50%;
+  --spacing-15-24: 62.50000001%;
+  --spacing-16-24: 66.66666667%;
+  --spacing-18-24: 75.00000001%;
+  --spacing-22-24: 91.66666667%;
+
+  --radius-4: 4px;
+  --shadow-4: 0px 6px 8px 8px rgba(196, 196, 196, 0.15);
 }
 
 @layer base {
@@ -29,12 +77,29 @@
   }
 
   body {
-    @apply bg-beige-100 font-sans text-ink antialiased;
+    @apply bg-beige-500 font-sans font-light text-ink antialiased;
   }
 
   :focus-visible {
     outline: 2px solid var(--color-brown-900);
     outline-offset: 2px;
+  }
+
+  /* iOS Safari gives date inputs an intrinsic width and centred text, which
+     makes them overflow narrow boxes. Make them behave like normal inputs. */
+  input[type="date"] {
+    -webkit-appearance: none;
+    appearance: none;
+    min-width: 0;
+    display: block;
+  }
+  input[type="date"]::-webkit-date-and-time-value {
+    text-align: left;
+    margin: 0;
+  }
+  input[type="date"]::-webkit-calendar-picker-indicator {
+    margin-left: 0.25rem;
+    opacity: 0.6;
   }
 
   @media (prefers-reduced-motion: reduce) {
@@ -50,16 +115,51 @@
   }
 }
 
+/* Same as the original `.container`: 1176px of content, 27px side padding. */
 @utility container-site {
   width: 100%;
-  max-width: var(--container-site);
+  max-width: calc(1176px + 54px);
   margin-inline: auto;
-  padding-inline: 1rem;
+  padding-inline: 27px;
+}
+
+/* Primary button of the original site. */
+@utility ui-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid var(--color-brown-900);
+  background-color: var(--color-brown-900);
+  font-size: var(--text-14);
+  line-height: var(--leading-170);
+  color: white;
+  transition: background-color 0.15s, color 0.15s;
+
+  @media (hover: hover) {
+    &:hover {
+      cursor: pointer;
+      background-color: var(--color-brown-100);
+      color: var(--color-brown-900);
+    }
+  }
+}
+
+@utility hero-gradient {
+  background: linear-gradient(270deg, #1f140c00, #1f140c01 0.01%, #1f140c80 74.1%);
+}
+@utility hero-radial-gradient {
+  background: radial-gradient(45.73% 108.38% at 90.69% 114.64%, #1f140c00, #1f140c4d);
+}
+@utility category-gradient {
+  background: linear-gradient(180deg, #072c49 30.99%, #072c4933 87.74%);
+  @media (width >= 48rem) {
+    background: linear-gradient(90deg, #072c49 37.61%, #072c4933 99.99%);
+  }
 }
 
 /* Rich text coming from the content files. */
 @utility prose-oblun {
-  & p + p,
+  /* Like the original: consecutive paragraphs have no gap between them. */
   & p + ul,
   & ul + p {
     margin-top: 0.85em;
@@ -87,5 +187,8 @@
   }
   & h2:first-child {
     margin-top: 0;
+  }
+  & h2 + p + p {
+    margin-top: 0.85em;
   }
 }
